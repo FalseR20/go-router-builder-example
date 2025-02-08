@@ -34,12 +34,12 @@ RouteBase get $myShellRoute => StatefulShellRouteData.$route(
               factory: $SecondBranchRouteExtension._fromState,
               routes: [
                 GoRouteData.$route(
-                  path: 'withParams',
-                  factory: $ParamsRouteExtension._fromState,
-                ),
-                GoRouteData.$route(
                   path: 'withExtra',
                   factory: $ExtraRouteExtension._fromState,
+                ),
+                GoRouteData.$route(
+                  path: 'withParams',
+                  factory: $ParamsRouteExtension._fromState,
                 ),
                 GoRouteData.$route(
                   path: 'combined',
@@ -108,6 +108,27 @@ extension $SecondBranchRouteExtension on SecondBranchRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
+extension $ExtraRouteExtension on ExtraRoute {
+  static ExtraRoute _fromState(GoRouterState state) => ExtraRoute(
+        state.extra as String?,
+      );
+
+  String get location => GoRouteData.$location(
+        '/secondBranch/withExtra',
+      );
+
+  void go(BuildContext context) => context.go(location, extra: $extra);
+
+  Future<T?> push<T>(BuildContext context) =>
+      context.push<T>(location, extra: $extra);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location, extra: $extra);
+
+  void replace(BuildContext context) =>
+      context.replace(location, extra: $extra);
+}
+
 extension $ParamsRouteExtension on ParamsRoute {
   static ParamsRoute _fromState(GoRouterState state) => ParamsRoute(
         param: state.uri.queryParameters['param']!,
@@ -130,31 +151,10 @@ extension $ParamsRouteExtension on ParamsRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $ExtraRouteExtension on ExtraRoute {
-  static ExtraRoute _fromState(GoRouterState state) => ExtraRoute(
-        state.extra as Extra?,
-      );
-
-  String get location => GoRouteData.$location(
-        '/secondBranch/withExtra',
-      );
-
-  void go(BuildContext context) => context.go(location, extra: $extra);
-
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
-
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
-}
-
 extension $CombinedRouteExtension on CombinedRoute {
   static CombinedRoute _fromState(GoRouterState state) => CombinedRoute(
         param: state.uri.queryParameters['param']!,
-        state.extra as Extra?,
+        state.extra as String?,
       );
 
   String get location => GoRouteData.$location(

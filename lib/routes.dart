@@ -19,8 +19,8 @@ final router = GoRouter(
   ]),
   TypedStatefulShellBranch(routes: [
     TypedGoRoute<SecondBranchRoute>(path: '/secondBranch', routes: [
-      TypedGoRoute<ParamsRoute>(path: 'withParams'),
       TypedGoRoute<ExtraRoute>(path: 'withExtra'),
+      TypedGoRoute<ParamsRoute>(path: 'withParams'),
       TypedGoRoute<CombinedRoute>(path: 'combined'),
     ]),
   ]),
@@ -64,6 +64,18 @@ class SecondBranchRoute extends GoRouteData {
       const CommonScreen(title: 'SecondBranchRoute');
 }
 
+class ExtraRoute extends GoRouteData {
+  const ExtraRoute(this.$extra);
+
+  final String? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => CommonScreen(
+        title: 'ExtraRoute',
+        extra: $extra,
+      );
+}
+
 class ParamsRoute extends GoRouteData {
   const ParamsRoute({required this.param});
 
@@ -76,31 +88,13 @@ class ParamsRoute extends GoRouteData {
       );
 }
 
-class ExtraRoute extends GoRouteData {
-  const ExtraRoute(this.$extra);
-
-  final Extra? $extra;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => CommonScreen(
-        title: 'ExtraRoute',
-        extraArg: $extra?.arg,
-      );
-}
-
-class Extra {
-  const Extra({required this.arg});
-
-  final String arg;
-}
-
 class CombinedRoute extends GoRouteData {
   const CombinedRoute(this.$extra, {required this.param});
 
-  final Extra? $extra;
+  final String? $extra;
   final String param;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      CommonScreen(title: 'CombinedRoute', param: param, extraArg: $extra?.arg);
+      CommonScreen(title: 'CombinedRoute', extra: $extra, param: param);
 }
