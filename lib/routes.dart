@@ -2,28 +2,29 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_router_builder_example/nav_bar.dart';
-import 'package:go_router_builder_example/screen.dart';
+import 'package:go_router_builder_example/common_screen.dart';
 
 part 'routes.g.dart';
 
 final router = GoRouter(
-  initialLocation: '/',
   debugLogDiagnostics: kDebugMode,
   routes: $appRoutes,
 );
 
-@TypedStatefulShellRoute<MyShellRoute>(
-  branches: [
-    TypedStatefulShellBranch(routes: [
-      TypedGoRoute<HomeRoute>(path: '/', routes: [
-        TypedGoRoute<HomeInnerRoute>(path: 'inner'),
-      ]),
+@TypedStatefulShellRoute<MyShellRoute>(branches: [
+  TypedStatefulShellBranch(routes: [
+    TypedGoRoute<HomeRoute>(path: '/', routes: [
+      TypedGoRoute<SimpleRoute>(path: 'simple'),
     ]),
-    TypedStatefulShellBranch(routes: [
-      TypedGoRoute<Screen2Route>(path: '/screen2'),
+  ]),
+  TypedStatefulShellBranch(routes: [
+    TypedGoRoute<SecondBranchRoute>(path: '/secondBranch', routes: [
+      TypedGoRoute<ParamsRoute>(path: 'withParams'),
+      TypedGoRoute<ExtraRoute>(path: 'withExtra'),
+      TypedGoRoute<CombinedRoute>(path: 'combined'),
     ]),
-  ],
-)
+  ]),
+])
 class MyShellRoute extends StatefulShellRouteData {
   const MyShellRoute();
 
@@ -35,9 +36,8 @@ class MyShellRoute extends StatefulShellRouteData {
     BuildContext context,
     GoRouterState state,
     StatefulNavigationShell navigationShell,
-  ) {
-    return NavBar(navigationShell: navigationShell);
-  }
+  ) =>
+      NavBar(navigationShell: navigationShell);
 }
 
 class HomeRoute extends GoRouteData {
@@ -45,21 +45,62 @@ class HomeRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const Screen(title: 'Home');
+      const CommonScreen(title: 'HomeRoute');
 }
 
-class HomeInnerRoute extends GoRouteData {
-  const HomeInnerRoute();
+class SimpleRoute extends GoRouteData {
+  const SimpleRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const Screen(title: 'Home inner');
+      const CommonScreen(title: 'SimpleRoute');
 }
 
-class Screen2Route extends GoRouteData {
-  const Screen2Route();
+class SecondBranchRoute extends GoRouteData {
+  const SecondBranchRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const Screen(title: 'Screen 2');
+      const CommonScreen(title: 'SecondBranchRoute');
+}
+
+class ParamsRoute extends GoRouteData {
+  const ParamsRoute({required this.param});
+
+  final String param;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => CommonScreen(
+        title: 'ParamsRoute',
+        param: param,
+      );
+}
+
+class ExtraRoute extends GoRouteData {
+  const ExtraRoute(this.$extra);
+
+  final Extra? $extra;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => CommonScreen(
+        title: 'ExtraRoute',
+        extraArg: $extra?.arg,
+      );
+}
+
+class Extra {
+  const Extra({required this.arg});
+
+  final String arg;
+}
+
+class CombinedRoute extends GoRouteData {
+  const CombinedRoute(this.$extra, {required this.param});
+
+  final Extra? $extra;
+  final String param;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      CommonScreen(title: 'CombinedRoute', param: param, extraArg: $extra?.arg);
 }

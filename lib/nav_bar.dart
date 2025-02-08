@@ -29,7 +29,7 @@ class NavBar extends StatelessWidget {
           const NavigationDestination(
             icon: Icon(Icons.looks_two_outlined),
             selectedIcon: Icon(Icons.looks_two),
-            label: 'Second page',
+            label: 'Second branch',
           ),
         ],
       ),
