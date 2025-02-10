@@ -11,40 +11,34 @@ final router = GoRouter(debugLogDiagnostics: kDebugMode, routes: [
         StatefulShellBranch(routes: [
           GoRoute(
               path: '/',
-              builder: (context, state) =>
-                  const CommonScreen(title: 'HomeRoute'),
+              builder: (context, state) => const CommonScreen(),
               routes: [
                 GoRoute(
                   path: 'simple',
-                  builder: (context, state) =>
-                      const CommonScreen(title: 'SimpleRoute'),
+                  builder: (context, state) => const CommonScreen(),
                 ),
               ]),
         ]),
         StatefulShellBranch(routes: [
           GoRoute(
               path: '/secondBranch',
-              builder: (context, state) =>
-                  const CommonScreen(title: 'SecondBranchRoute'),
+              builder: (context, state) => const CommonScreen(),
               routes: [
                 GoRoute(
                   path: 'withExtra',
                   builder: (context, state) => CommonScreen(
-                    title: 'ExtraRoute',
                     param: state.extra as String?,
                   ),
                 ),
                 GoRoute(
                   path: 'withPathParam/:pathParam',
                   builder: (context, state) => CommonScreen(
-                    title: 'PathParamRoute',
                     param: state.pathParameters['pathParam'],
                   ),
                 ),
                 GoRoute(
                   path: 'withQueryParam',
                   builder: (context, state) => CommonScreen(
-                    title: 'QueryParamRoute',
                     param: state.uri.queryParameters['queryParam'],
                   ),
                 ),

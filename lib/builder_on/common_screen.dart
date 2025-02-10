@@ -6,25 +6,24 @@ import 'package:go_router_builder_example/builder_on/routes.dart';
 
 class CommonScreen extends StatelessWidget {
   const CommonScreen({
-    required this.title,
     this.param,
     super.key,
   });
 
-  final String title;
   final String? param;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(
+        title: Text(GoRouterState.of(context).uri.toString()),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: Column(
           spacing: 16.0,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text('Current location: ${GoRouterState.of(context).uri}'),
             Text('Received parameter: ${json.encode(param)}'),
             const SizedBox(height: 8.0),
             FilledButton(

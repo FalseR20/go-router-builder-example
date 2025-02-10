@@ -45,7 +45,7 @@ class HomeRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const CommonScreen(title: 'HomeRoute');
+      const CommonScreen();
 }
 
 class SimpleRoute extends GoRouteData {
@@ -53,7 +53,7 @@ class SimpleRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const CommonScreen(title: 'SimpleRoute');
+      const CommonScreen();
 }
 
 class SecondBranchRoute extends GoRouteData {
@@ -61,7 +61,7 @@ class SecondBranchRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      const CommonScreen(title: 'SecondBranchRoute');
+      const CommonScreen();
 }
 
 class ExtraRoute extends GoRouteData {
@@ -71,7 +71,7 @@ class ExtraRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      CommonScreen(title: 'ExtraRoute', param: $extra);
+      CommonScreen(param: $extra);
 }
 
 class PathParamRoute extends GoRouteData {
@@ -81,7 +81,7 @@ class PathParamRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      CommonScreen(title: 'PathParamRoute', param: pathParam);
+      CommonScreen(param: pathParam);
 }
 
 class QueryParamRoute extends GoRouteData {
@@ -91,5 +91,5 @@ class QueryParamRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      CommonScreen(title: 'QueryParamRoute', param: queryParam);
+      CommonScreen(param: queryParam);
 }
