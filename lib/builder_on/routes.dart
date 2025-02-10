@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:go_router_builder_example/nav_bar.dart';
-import 'package:go_router_builder_example/common_screen.dart';
+import 'package:go_router_builder_example/builder_on/nav_bar.dart';
+import 'package:go_router_builder_example/builder_on/common_screen.dart';
 
 part 'routes.g.dart';
 
@@ -20,8 +20,8 @@ final router = GoRouter(
   TypedStatefulShellBranch(routes: [
     TypedGoRoute<SecondBranchRoute>(path: '/secondBranch', routes: [
       TypedGoRoute<ExtraRoute>(path: 'withExtra'),
-      TypedGoRoute<ParamsRoute>(path: 'withParams'),
-      TypedGoRoute<CombinedRoute>(path: 'combined'),
+      TypedGoRoute<PathParamRoute>(path: 'withPathParams/:pathParam'),
+      TypedGoRoute<QueryParamRoute>(path: 'withQueryParam'),
     ]),
   ]),
 ])
@@ -70,31 +70,26 @@ class ExtraRoute extends GoRouteData {
   final String? $extra;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) => CommonScreen(
-        title: 'ExtraRoute',
-        extra: $extra,
-      );
+  Widget build(BuildContext context, GoRouterState state) =>
+      CommonScreen(title: 'ExtraRoute', param: $extra);
 }
 
-class ParamsRoute extends GoRouteData {
-  const ParamsRoute({required this.param});
+class PathParamRoute extends GoRouteData {
+  const PathParamRoute({required this.pathParam});
 
-  final String param;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) => CommonScreen(
-        title: 'ParamsRoute',
-        param: param,
-      );
-}
-
-class CombinedRoute extends GoRouteData {
-  const CombinedRoute(this.$extra, {required this.param});
-
-  final String? $extra;
-  final String param;
+  final String pathParam;
 
   @override
   Widget build(BuildContext context, GoRouterState state) =>
-      CommonScreen(title: 'CombinedRoute', extra: $extra, param: param);
+      CommonScreen(title: 'PathParamRoute', param: pathParam);
+}
+
+class QueryParamRoute extends GoRouteData {
+  const QueryParamRoute({required this.queryParam});
+
+  final String queryParam;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      CommonScreen(title: 'QueryParamRoute', param: queryParam);
 }

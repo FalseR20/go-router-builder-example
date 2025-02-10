@@ -38,12 +38,12 @@ RouteBase get $myShellRoute => StatefulShellRouteData.$route(
                   factory: $ExtraRouteExtension._fromState,
                 ),
                 GoRouteData.$route(
-                  path: 'withParams',
-                  factory: $ParamsRouteExtension._fromState,
+                  path: 'withPathParams/:pathParam',
+                  factory: $PathParamRouteExtension._fromState,
                 ),
                 GoRouteData.$route(
-                  path: 'combined',
-                  factory: $CombinedRouteExtension._fromState,
+                  path: 'withQueryParam',
+                  factory: $QueryParamRouteExtension._fromState,
                 ),
               ],
             ),
@@ -129,16 +129,13 @@ extension $ExtraRouteExtension on ExtraRoute {
       context.replace(location, extra: $extra);
 }
 
-extension $ParamsRouteExtension on ParamsRoute {
-  static ParamsRoute _fromState(GoRouterState state) => ParamsRoute(
-        param: state.uri.queryParameters['param']!,
+extension $PathParamRouteExtension on PathParamRoute {
+  static PathParamRoute _fromState(GoRouterState state) => PathParamRoute(
+        pathParam: state.pathParameters['pathParam']!,
       );
 
   String get location => GoRouteData.$location(
-        '/secondBranch/withParams',
-        queryParams: {
-          'param': param,
-        },
+        '/secondBranch/withPathParams/${Uri.encodeComponent(pathParam)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -151,27 +148,24 @@ extension $ParamsRouteExtension on ParamsRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $CombinedRouteExtension on CombinedRoute {
-  static CombinedRoute _fromState(GoRouterState state) => CombinedRoute(
-        param: state.uri.queryParameters['param']!,
-        state.extra as String?,
+extension $QueryParamRouteExtension on QueryParamRoute {
+  static QueryParamRoute _fromState(GoRouterState state) => QueryParamRoute(
+        queryParam: state.uri.queryParameters['query-param']!,
       );
 
   String get location => GoRouteData.$location(
-        '/secondBranch/combined',
+        '/secondBranch/withQueryParam',
         queryParams: {
-          'param': param,
+          'query-param': queryParam,
         },
       );
 
-  void go(BuildContext context) => context.go(location, extra: $extra);
+  void go(BuildContext context) => context.go(location);
 
-  Future<T?> push<T>(BuildContext context) =>
-      context.push<T>(location, extra: $extra);
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
   void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location, extra: $extra);
+      context.pushReplacement(location);
 
-  void replace(BuildContext context) =>
-      context.replace(location, extra: $extra);
+  void replace(BuildContext context) => context.replace(location);
 }
